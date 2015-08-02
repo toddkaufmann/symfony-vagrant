@@ -110,20 +110,28 @@ fi
 
 sudo apt-get update
 
-if [ "$DB" == "maria_10" ]; then
-    # prevent prompt for password
-    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server-10.0     
-else 
-    # default mysql
-    # TODO set pw with debconf; see
-    # DEBIAN_FRONTEND=noninteractive  apt-get install -y  mariadb-server  
-    sudo DEBIAN_FRONTEND=noninteractive  apt-get install -y  mariadb-server  
+INSTALL_DB==No
+
+if [ "INSTALL_DB" != "Yes" ]; then
+
+    if [ "$DB" == "maria_10" ]; then
+        # prevent prompt for password
+        sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server-10.0     
+    else 
+        # default mysql
+        # TODO set pw with debconf; see
+        # DEBIAN_FRONTEND=noninteractive  apt-get install -y  mariadb-server  
+        sudo DEBIAN_FRONTEND=noninteractive  apt-get install -y  mariadb-server  
+    fi
+
+    echo 
+    echo ================================= TODO:  set password
+    echo 
+    sleep 5
+else
+    echo ================================= No database in this server.......
 fi
 
-echo 
-echo ================================= TODO:  set password
-echo 
-sleep 5
 
 # Unnecessary services
 sudo service puppet stop
@@ -167,18 +175,20 @@ sudo chmod a+x /usr/local/bin/symfony
 #############
 ############# Application configuration
 #############
-# maria db -- set root password
+#  db -- set root password
 
-echo Creating symtest database
-echo 'CREATE DATABASE  `symtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;' | mysql -u root
 
-#  ?? load any data ??
-# this fixes a table with many longtexts on a row that I couldn't load.. 
-(echo 'SET GLOBAL innodb_file_format=Barracuda;'; \
- echo 'SET GLOBAL innodb_file_per_table=ON; '; \
- echo '-- ALTER TABLE `Candidates` ROW_FORMAT=COMPRESSED; -- maybe above default is enough?') \
- | mysql -u root symtest
+if [ "INSTALL_DB" == "Yes" ]; then
+    echo Creating symtest database
+    echo 'CREATE DATABASE  `symtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;' | mysql -u root
 
+    #  ?? load any data ??
+    # this fixes a table with many longtexts on a row that I couldn't load.. 
+    (echo 'SET GLOBAL innodb_file_format=Barracuda;'; \
+     echo 'SET GLOBAL innodb_file_per_table=ON; '; \
+     echo '-- ALTER TABLE `Candidates` ROW_FORMAT=COMPRESSED; -- maybe above default is enough?') \
+     | mysql -u root symtest
+fi
 
 
 # PHP config -- 
@@ -230,6 +240,8 @@ echo
 
 # debug:  check vagrant env 
 set > /vagrant/up-`date +%Y%m%d.%H%M`.env
+# TODO:
+# - log other useful vm stats?  (startup time, kernel etc)
 
 #############
 
