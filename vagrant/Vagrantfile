@@ -19,9 +19,10 @@ Vagrant.configure(2) do |config|
 #  fails:  "No guest additions were detected on the base box for this VM!"
 
 # works
-# config.vm.box = "ubuntu/trusty64"
+config.vm.box = "ubuntu/trusty64"
 
-config.vm.box = "precise32"
+# php too old!
+# config.vm.box = "precise32"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -158,7 +159,7 @@ if [ "INSTALL_DB" == "Yes" ]; then
 fi
 
 # Can't install symfony without curl
-if [ `whereis curl` == 'curl:' ]; then 
+if [ "`whereis curl`" == 'curl:' ]; then 
     sudo apt-get install -y curl  
 fi
 
@@ -205,7 +206,7 @@ fi
 
 # PHP config -- 
 # .ini settings
-sudo tee /etc/php5/cli/conf.d/01-symtest-timezone.ini <<TIMZONE
+sudo tee /etc/php5/cli/conf.d/01-symfony-timezone.ini <<TIMZONE
 [Date]
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
@@ -214,9 +215,9 @@ date.timezone = America/New_York
 TIMZONE
 # for apache as well
 # note on debian the two conf.d's are symlink'd so this would already exist
-if [ ! -e /etc/php5/apache2/conf.d/01-symtest-timezone.ini ]; then
-  sudo ln /etc/php5/cli/conf.d/01-symtest-timezone.ini \
-         /etc/php5/apache2/conf.d/01-symtest-timezone.ini
+if [ ! -e /etc/php5/apache2/conf.d/01-symfony-timezone.ini ]; then
+  sudo ln /etc/php5/cli/conf.d/01-symfony-timezone.ini \
+         /etc/php5/apache2/conf.d/01-symfony-timezone.ini
 fi
 
 
@@ -234,7 +235,7 @@ sudo /vagrant/vm-config/configure-apache
 # for some reason HOME is not set?  but sudo sets it ...
 sudo su -c /vagrant/vm-config/configure-app   vagrant
 
-cd symtest
+cd symProject
 sudo chown -R vagrant.www-data app/logs app/cache
 sudo chmod -R go+w             app/logs app/cache/
 

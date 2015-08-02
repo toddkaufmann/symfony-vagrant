@@ -22,9 +22,9 @@ fi
 umask 002
 
 # name of symfony project
-PROJECT=symtest
+PROJECT=symProject
 # where the files live outside of the vm
-ROOT=/trunk/symtest
+ROOT=/trunk/symProject
 echo
 
 echo Creating symfony project...
@@ -43,8 +43,16 @@ echo '============ FAIL  -- check in composer?  or download ? ' >&2
 echo '============ FAIL ' >&2
 
 echo Composer update and install -
-/trunk/composer.phar update
-/trunk/composer.phar install
+if [ -x /trunk/composer.phar ]; then
+    /trunk/composer.phar update
+    /trunk/composer.phar install
+else 
+    echo installing composer...
+    curl -sS https://getcomposer.org/installer | php
+    ./composer.phar update
+    ./composer.phar install
+fi
+
 
 # Symbolic Links to svn tree.  This seems to work.
 # Note:  currently only references what has actually been modified from stock project;
@@ -83,7 +91,7 @@ perl -pi -e  's/# Options FollowSymlinks/Options FollowSymlinks/'  web/.htaccess
 ## 
 cd app/config
 for f in parameters.yml security.yml ; do
-  mv $f $f.orig &&  ln -s /trunk/html/$PROJECT/app/config/$f .; 
+  mv $f $f.orig &&  ln -s /trunk/$PROJECT/app/config/$f .; 
 done
 cd ../..
 
