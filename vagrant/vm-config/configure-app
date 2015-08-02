@@ -90,6 +90,17 @@ perl -pi -e  's/# Options FollowSymlinks/Options FollowSymlinks/'  web/.htaccess
 ##   (override with vm specific, for separate config?)
 ## 
 cd app/config
+
+if [ ! -f /trunk/$PROJECT/app/config/parameters.yml ]; then
+    if cp /trunk/$PROJECT/app/config/parameters.yml.dist /trunk/$PROJECT/app/config/parameters.yml; then
+	echo "I copied  parameters.yml from parameters.yml.dist -- PLEASE CONFIGURE your app."  >&2
+	echo "# " `date` " - copied from parameters.yml.dist by $0" >> /trunk/$PROJECT/app/config/parameters.yml 
+    else 
+	echo "ERROR couldn't create parameters.yml -- please do so outside the vm, link should still exist."  >&2
+    fi
+    echo '# placeholder because it didnt exist before' > parameters.yml
+fi
+
 for f in parameters.yml security.yml ; do
   mv $f $f.orig &&  ln -s /trunk/$PROJECT/app/config/$f .; 
 done
