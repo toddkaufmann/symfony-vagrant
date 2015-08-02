@@ -24,7 +24,7 @@ umask 002
 # name of symfony project
 PROJECT=symtest
 # where the files live outside of the vm
-ROOT=/trunk/html/symtest
+ROOT=/trunk/symtest
 echo
 
 echo Creating symfony project...
@@ -36,6 +36,11 @@ cd $PROJECT
 # this is supposed to make it faster by not having vendor/ outside of VM.
 cp /trunk/vagrant/vm-config/symfony-vagrant/composer.json .
 cp /trunk/vagrant/vm-config/symfony-vagrant/autoload.php  app
+
+echo '============ FAIL ' > &2
+echo '============ FAIL  -- check in composer?  or download ? ' > &2
+echo '============ FAIL ' > &2
+
 echo Composer update and install -
 /trunk/composer.phar update
 /trunk/composer.phar install
@@ -62,11 +67,13 @@ echo Culling and linking to SVN...
 #
 mv src src.orig                      && ln -s $ROOT/src .
 mv app/Resources app/Resources.orig  && ln -s $ROOT/app/Resources app
-ln -s /trunk/html/dist   web
-ln -s /trunk/html/images web
+
+# do you have any other other static resources under /trunk ?  link here, eg:
+# ln -s /trunk/html/dist   web
+# ln -s /trunk/html/images web
+
 # Allow symlinks here:
 perl -pi -e  's/# Options FollowSymlinks/Options FollowSymlinks/'  web/.htaccess 
-# js, others ?
 
 
 ##
@@ -88,7 +95,6 @@ chmod go+rw app/logs app/cache
 OUTSIDE_IP=10.0.2.2
 perl -pi -e "s='127.0.0.1',='127.0.0.1','$OUTSIDE_IP',=" web/app_dev.php  web/config.php 
 
-
 echo
 echo "let's  check--"
 php app/check.php
@@ -98,18 +104,19 @@ php app/check.php
 ## 
 ## # doctrine objects
 ## 
-if false; then
-    echo ======= NO DOCTRINE ENTITIES YET =======
+if true; then
+    echo ======= NO DOCTRINE ENTITIES, no db created YET =======
 else
     # TODO set user..
     echo '============> Creating db for login ..' >&2
-    # echo 'CREATE DATABASE  `caltest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;' | mysql -u root
-    # 'symfony new' put something  here?  clear it out.
+    # echo 'CREATE DATABASE  `symtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;' | mysql -u root
+
+    # 'symfony new' puts something  here?  clear it out.
     php app/console cache:clear
     # generate our db entities
     php app/console doctrine:schema:update --force
     # 1 simple user
-    echo "insert into app_users(username,password,email) values ('c@c','pw','not_used?');" | mysql -u root caltest
+    # echo "insert into app_users(username,password,email) values ('c@c','pw','not_used?');" | mysql -u root caltest
 fi
 
 ## 
@@ -120,7 +127,7 @@ fi
 #  or just plaintext from candidates initially
 
 ## 
-## Other data ?
+## Other data for your db ?
 ## 
 
 echo 
