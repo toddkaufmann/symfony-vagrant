@@ -1,20 +1,19 @@
 
-# Vagrant box for Calwest project
+# A minimal Vagrant box for Symfony project
 
 Vagrant lets you reproducibly create vritual machines, 
 allowing everyone to work in a similar, if not the same environment.
 
-Project files in subversion are directly accessible from the virtual machine,
+Project files in symfony folder are directly accessible from the virtual machine,
 so you can work using whatever editor and tools you are comfortable with.
 
 
 ## Instructions:
 
-1. Get & install  Vagrant for your platform
+1. Get & install  Vagrant for your platform  (http://vagrantup.com)
 2. Run 'vagrant up' in this directory.
-3. Wait in a few minutes, you'll have a box with everything installed and configured 
-   (first time may take a while for downloads).
-
+3. Wait, and in a few minutes, you'll have a box with everything installed and configured 
+   (first time may take a while for initial box download).
 
 Server should start up on port 2259:
 
@@ -31,9 +30,6 @@ This is because it currently makes over 2000 filesystem stat()'s and the vagrant
 
 
 The virtual machine has reference to the svn/trunk folder through the path '/trunk'
-
-If you forget the number, just look at your phone.
-2259 'spells' C-A-L-W.
 
 
 Report problems/errors to Todd.
@@ -61,6 +57,6 @@ Some of the AWS config could be moved back in here ?
 Untested with Vagrant AWS provider.
 ESXi provider may be useful for skymark.
 
-The virtual machine has reference to the svn/trunk folder through the path '/trunk'
-Perhaps this is batter as '/home/calwest' for deployment ?
+The virtual machine has reference to the project folder through the path '/trunk'
+Perhaps this is batter than '/home/symtest' for deployment ?
 

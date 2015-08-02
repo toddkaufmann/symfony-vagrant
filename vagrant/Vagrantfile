@@ -14,7 +14,9 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
 # from
 # vagrant up ubuntu/trusty64 --provider virtualbox
-  config.vm.box = "ubuntu/trusty64"
+
+#  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "deb7.6"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -181,7 +183,7 @@ echo 'CREATE DATABASE  `caltest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general
 
 # PHP config -- 
 # .ini settings
-sudo tee /etc/php5/cli/conf.d/01-calwest-timezone.ini <<TIMZONE
+sudo tee /etc/php5/cli/conf.d/01-symtest-timezone.ini <<TIMZONE
 [Date]
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
@@ -189,24 +191,24 @@ date.timezone = America/New_York
 
 TIMZONE
 # for apache as well
-sudo cp -p /etc/php5/cli/conf.d/01-calwest-timezone.ini \
-       /etc/php5/apache2/conf.d/01-calwest-timezone.ini
+sudo cp -p /etc/php5/cli/conf.d/01-symtest-timezone.ini \
+       /etc/php5/apache2/conf.d/01-symtest-timezone.ini
 
 #
 # apache config
 #
 sudo /vagrant/vm-config/configure-apache
 
-# Separate Calwest user for app ?
-# sudo useradd --shell /bin/bash  --create-home  calwest
-# sudo su -c /vagrant/vm-config/configure-app calwest
+# Separate Symtest user for app ?
+# sudo useradd --shell /bin/bash  --create-home  symtest
+# sudo su -c /vagrant/vm-config/configure-app symtest
 # We'll just use current user (vagrant)
 
 
 # for some reason HOME is not set?  but sudo sets it ...
 sudo su -c /vagrant/vm-config/configure-app   vagrant
 
-cd calwest
+cd symtest
 sudo chown -R vagrant.www-data app/logs app/cache
 sudo chmod -R go+w             app/logs app/cache/
 

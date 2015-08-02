@@ -10,7 +10,7 @@ echo '============== Begin configure-app : symfony project creation & config' >&
 # This is a working version,
 #  not a final version.
 
-#apphome=/home/calwest 
+#apphome=/home/symtest 
 apphome=/home/vagrant
 
 if ! cd $apphome; then
@@ -22,9 +22,9 @@ fi
 umask 002
 
 # name of symfony project
-PROJECT=calwest
+PROJECT=symtest
 # where the files live outside of the vm
-ROOT=/trunk/html/calwest
+ROOT=/trunk/html/symtest
 echo
 
 echo Creating symfony project...
