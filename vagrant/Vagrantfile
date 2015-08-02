@@ -117,7 +117,7 @@ sudo apt-get update
 
 INSTALL_DB==No
 
-if [ "INSTALL_DB" != "Yes" ]; then
+if [ "INSTALL_DB" == "Yes" ]; then
 
     if [ "$DB" == "maria_10" ]; then
         # prevent prompt for password
@@ -151,9 +151,16 @@ sudo apt-get install -y  libapache2-mod-php5
 # libapache2-mod-php5 includes apache2 and php5-cli
 # ? php5-dev 
 
-# pdo driver
-sudo apt-get install -y  php5-mysql
-# php5-dbg has this, also sqlite,odbc,pgsql
+if [ "INSTALL_DB" == "Yes" ]; then
+    # pdo driver
+    sudo apt-get install -y  php5-mysql
+    # php5-dbg has this, also sqlite,odbc,pgsql
+fi
+
+# Can't install symfony without curl
+if [ `whereis curl` == 'curl:' ]; then 
+    sudo apt-get install -y curl  
+fi
 
 # symfony requirements (composer, actually)
 sudo apt-get install -y php5-curl
@@ -206,8 +213,12 @@ date.timezone = America/New_York
 
 TIMZONE
 # for apache as well
-sudo cp -p /etc/php5/cli/conf.d/01-symtest-timezone.ini \
-       /etc/php5/apache2/conf.d/01-symtest-timezone.ini
+# note on debian the two conf.d's are symlink'd so this would already exist
+if [ ! -e /etc/php5/apache2/conf.d/01-symtest-timezone.ini ]; then
+  sudo ln /etc/php5/cli/conf.d/01-symtest-timezone.ini \
+         /etc/php5/apache2/conf.d/01-symtest-timezone.ini
+fi
+
 
 #
 # apache config

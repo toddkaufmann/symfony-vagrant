@@ -28,6 +28,7 @@ ROOT=/trunk/symtest
 echo
 
 echo Creating symfony project...
+echo '#  ############################################################################# TODO: check if this fails due to old php version'
 symfony new $PROJECT
 cd $PROJECT
 
@@ -37,9 +38,9 @@ cd $PROJECT
 cp /trunk/vagrant/vm-config/symfony-vagrant/composer.json .
 cp /trunk/vagrant/vm-config/symfony-vagrant/autoload.php  app
 
-echo '============ FAIL ' > &2
-echo '============ FAIL  -- check in composer?  or download ? ' > &2
-echo '============ FAIL ' > &2
+echo '============ FAIL .. i dont have composer yet. ' >&2
+echo '============ FAIL  -- check in composer?  or download ? ' >&2
+echo '============ FAIL ' >&2
 
 echo Composer update and install -
 /trunk/composer.phar update
