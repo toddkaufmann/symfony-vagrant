@@ -1,5 +1,5 @@
 {
-    "name": "vagrant/symtest",
+    "name": "vagrant/symProject",
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -49,7 +49,7 @@
     },
     "config": {
         "bin-dir": "bin",
-	"vendor-dir": "/home/vagrant/symtest/vendor"
+	"vendor-dir": "/home/vagrant/symProject/vendor"
     },
     "extra": {
         "symfony-app-dir": "app",
