@@ -123,9 +123,7 @@ fi
 ## Other data ?
 ## 
 
-echo
-echo Wireframes etc are still here, eg:  echo http://localhost:2259/map/candidate/login/
 echo 
-echo test symfony URLs:  http://localhost:2259/app_dev.php
+echo test symfony URLs:  http://localhost:8633/app_dev.php
 echo
 echo '============== End configure-app' >&2

@@ -15,14 +15,14 @@ so you can work using whatever editor and tools you are comfortable with.
 3. Wait, and in a few minutes, you'll have a box with everything installed and configured 
    (first time may take a while for initial box download).
 
-Server should start up on port 2259:
+Server should start up on port 8633  (*):
 
-http://localhost:2259/map/candidate/login/    to match what is currently at Amazon.
+http://localhost:8633/map/candidate/login/    to match what is currently at Amazon.
 
-http://localhost:2259/       to very limited Symfony functionality (basic login at least).
+http://localhost:8633/       to very limited Symfony functionality (basic login at least).
 
 *NOTE:*
-http://localhost:2259/map/   is really slow and will timeout.
+http://localhost:8633/map/   is really slow and will timeout.
 This is because it currently makes over 2000 filesystem stat()'s and the vagrant filesystem is much slower.
 (Can we cache to a file once (like during svn update), and use this if it exists;
  remove the file to not use cache (on other systems)?)
@@ -60,3 +60,7 @@ ESXi provider may be useful for skymark.
 The virtual machine has reference to the project folder through the path '/trunk'
 Perhaps this is batter than '/home/symtest' for deployment ?
 
+______
+# footnotes
+
+*1 - port is in Vagrantfile, 
