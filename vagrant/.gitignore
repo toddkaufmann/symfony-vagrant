@@ -1,3 +1,4 @@
-c1*.sql
-*.env
+# don't commit the vagrant machine metadata
 .vagrant
+# I create this at a note last tiem 'vagrant up'
+up-*.env
