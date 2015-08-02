@@ -116,7 +116,7 @@ else
     # generate our db entities
     php app/console doctrine:schema:update --force
     # 1 simple user
-    # echo "insert into app_users(username,password,email) values ('c@c','pw','not_used?');" | mysql -u root caltest
+    # echo "insert into app_users(username,password,email) values ('c@c','pw','not_used?');" | mysql -u root symtest
 fi
 
 ## 

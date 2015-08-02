@@ -169,15 +169,15 @@ sudo chmod a+x /usr/local/bin/symfony
 #############
 # maria db -- set root password
 
-echo Creating caltest database
-echo 'CREATE DATABASE  `caltest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;' | mysql -u root
+echo Creating symtest database
+echo 'CREATE DATABASE  `symtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;' | mysql -u root
 
 #  ?? load any data ??
-# this makes candidates loadable
+# this fixes a table with many longtexts on a row that I couldn't load.. 
 (echo 'SET GLOBAL innodb_file_format=Barracuda;'; \
  echo 'SET GLOBAL innodb_file_per_table=ON; '; \
  echo '-- ALTER TABLE `Candidates` ROW_FORMAT=COMPRESSED; -- maybe above default is enough?') \
- | mysql -u root caltest
+ | mysql -u root symtest
 
 
 
