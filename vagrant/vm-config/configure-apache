@@ -1,0 +1,12 @@
+# to be run as root
+## .. we'll just override the default too, but I'd like to go to defining a separate servername..
+#mv /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.orig 
+#cp /vagrant/vm-config/apache.000-default.conf /etc/apache2/sites-available/000-default.conf 
+rm /etc/apache2/sites-available/000-default.conf 
+ln -s /vagrant/vm-config/apache.000-default.conf /etc/apache2/sites-available/000-default.conf 
+
+# required modules:
+a2enmod actions
+a2enmod rewrite
+service apache2 restart
+# .conf  vhost

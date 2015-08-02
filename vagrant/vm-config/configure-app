@@ -1,0 +1,131 @@
+#!/bin/sh
+
+echo '============== Begin configure-app : symfony project creation & config' >&2
+
+# for performance, cache and logs should stay in the vm.
+# ((some of the) config too?)
+# we'll set up a shell,
+# with symlinks out for convenience.
+
+# This is a working version,
+#  not a final version.
+
+#apphome=/home/calwest 
+apphome=/home/vagrant
+
+if ! cd $apphome; then
+  echo this doesnt look like the right place
+  exit 1
+fi 
+
+# To avoid permissions problems in the VM
+umask 002
+
+# name of symfony project
+PROJECT=calwest
+# where the files live outside of the vm
+ROOT=/trunk/html/calwest
+echo
+
+echo Creating symfony project...
+symfony new $PROJECT
+cd $PROJECT
+
+
+### ? other changes to composer.json and autoload.php ?
+# this is supposed to make it faster by not having vendor/ outside of VM.
+cp /trunk/vagrant/vm-config/symfony-vagrant/composer.json .
+cp /trunk/vagrant/vm-config/symfony-vagrant/autoload.php  app
+echo Composer update and install -
+/trunk/composer.phar update
+/trunk/composer.phar install
+
+# Symbolic Links to svn tree.  This seems to work.
+# Note:  currently only references what has actually been modified from stock project;
+#        you might need to adjust if you change things.
+echo Culling and linking to SVN...
+
+
+# app/ contains
+#    config/ 
+#    Resources/views/  - twig templates
+#    console
+# bin/  - utils
+# src/
+#    AppBundle/Controller
+# web/       - others assets (css,js,graphics)
+#    dist/
+#    images/
+#
+
+# Link to directories outside vm for our code, templates, and assets
+#
+mv src src.orig                      && ln -s $ROOT/src .
+mv app/Resources app/Resources.orig  && ln -s $ROOT/app/Resources app
+ln -s /trunk/html/dist   web
+ln -s /trunk/html/images web
+# Allow symlinks here:
+perl -pi -e  's/# Options FollowSymlinks/Options FollowSymlinks/'  web/.htaccess 
+# js, others ?
+
+
+##
+## app/config - outside vm as well
+##   (override with vm specific, for separate config?)
+## 
+cd app/config
+for f in parameters.yml security.yml ; do
+  mv $f $f.orig &&  ln -s /trunk/html/$PROJECT/app/config/$f .; 
+done
+cd ../..
+
+
+# permissions hack
+chmod go+rw app/logs app/cache
+
+# allow app_dev.php access from outside
+#  ? will this match your IP?   [should make it match network]
+OUTSIDE_IP=10.0.2.2
+perl -pi -e "s='127.0.0.1',='127.0.0.1','$OUTSIDE_IP',=" web/app_dev.php  web/config.php 
+
+
+echo
+echo "let's  check--"
+php app/check.php
+
+## The following assumes clean (from scratch) data 
+
+## 
+## # doctrine objects
+## 
+if false; then
+    echo ======= NO DOCTRINE ENTITIES YET =======
+else
+    # TODO set user..
+    echo '============> Creating db for login ..' >&2
+    # echo 'CREATE DATABASE  `caltest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;' | mysql -u root
+    # 'symfony new' put something  here?  clear it out.
+    php app/console cache:clear
+    # generate our db entities
+    php app/console doctrine:schema:update --force
+    # 1 simple user
+    echo "insert into app_users(username,password,email) values ('c@c','pw','not_used?');" | mysql -u root caltest
+fi
+
+## 
+## Load initial users
+## 
+# php app/console user:create user pw
+# or fixture to load,
+#  or just plaintext from candidates initially
+
+## 
+## Other data ?
+## 
+
+echo
+echo Wireframes etc are still here, eg:  echo http://localhost:2259/map/candidate/login/
+echo 
+echo test symfony URLs:  http://localhost:2259/app_dev.php
+echo
+echo '============== End configure-app' >&2
