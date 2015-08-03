@@ -76,6 +76,7 @@ echo Culling and linking to SVN...
 #
 mv src src.orig                      && ln -s $ROOT/src .
 mv app/Resources app/Resources.orig  && ln -s $ROOT/app/Resources app
+mv app/AppKernel.php app/AppKernel.php.orig  && ln -s $ROOT/app/AppKernel.php app
 
 # do you have any other other static resources under /trunk ?  link here, eg:
 # ln -s /trunk/html/dist   web

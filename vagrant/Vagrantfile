@@ -120,11 +120,13 @@ INSTALL_DB==No
 
 if [ "INSTALL_DB" == "Yes" ]; then
 
+  # TODO: base all behavior on 'DB' and have it name the pkg or none.
+  #  then extensible to pg,mongo etc.
     if [ "$DB" == "maria_10" ]; then
         # prevent prompt for password
         sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server-10.0     
     else 
-        # default mysql
+        # default maria
         # TODO set pw with debconf; see
         # DEBIAN_FRONTEND=noninteractive  apt-get install -y  mariadb-server  
         sudo DEBIAN_FRONTEND=noninteractive  apt-get install -y  mariadb-server  
