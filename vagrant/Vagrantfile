@@ -116,7 +116,7 @@ fi
 
 sudo apt-get update
 
-INSTALL_DB==No
+INSTALL_DB=No
 
 if [ "$INSTALL_DB" == "Yes" ]; then
 
