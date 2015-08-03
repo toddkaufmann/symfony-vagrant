@@ -101,7 +101,7 @@ if [ ! -f /trunk/$PROJECT/app/config/parameters.yml ]; then
     echo '# placeholder because it didnt exist before' > parameters.yml
 fi
 
-for f in parameters.yml security.yml ; do
+for f in parameters.yml security.yml config.yml ; do
   mv $f $f.orig &&  ln -s /trunk/$PROJECT/app/config/$f .; 
 done
 cd ../..
