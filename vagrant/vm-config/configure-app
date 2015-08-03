@@ -38,11 +38,8 @@ cd $PROJECT
 cp /trunk/vagrant/vm-config/symfony-vagrant/composer.json .
 cp /trunk/vagrant/vm-config/symfony-vagrant/autoload.php  app
 
-echo '============ FAIL .. i dont have composer yet. ' >&2
-echo '============ FAIL  -- check in composer?  or download ? ' >&2
-echo '============ FAIL ' >&2
-
 echo Composer update and install -
+# TODO check status
 if [ -x /trunk/composer.phar ]; then
     /trunk/composer.phar update
     /trunk/composer.phar install
