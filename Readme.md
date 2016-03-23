@@ -1,6 +1,8 @@
 A very basic Vagrant config for running a very basic Symfony2 project.
 
-The Symfony project here is just from 'symfony new symProject'
+The Symfony project here is just from 'symfony new symProject 2.7'
+
+Note:  currently fixed at 2.7 because of some project structure assumptions made; upgrade testing in progress.
 
 You can run outside (server:run) (should work), or use vagrant to start a vm.
 It will access the files here.
@@ -9,21 +11,29 @@ possibly you'll need to add more (manually, or see vagrant/vm-config/configure-a
 
 
 TODO
+
+Symfony
  - how to change name symProject  ? it's in Vagrantfile, configure-app and configure-apache
+MySQL (or maria)
  - symtest is the db name (by default:  not created).  but composer asks about it?
+
+
+Apache
  - symvm vhost servername (but shouldn't matter, unless you want to config other vhosts)
  - composer complains about about parameters.yml file 
-in vagrant config: 
+
+Vagrant / Virtualbox
+ - config file should be more modular
 x  - apache logfile name:  is symvm (but prefer 00default disable/enable, as someone did elsewhere? ?)
  - apache vhost ServerName is symvm.dev (is .dev acceptable ?)
 ? - change trunk to devroot
  - split shell into:  pkgs apache db(mysql/maria)(+ pdo)
  - debian instead of ubuntu (how much smaller?) (7.6 had issues -- php version)
- - ACLs instead of chown/chmod/uname
+ - ACLs instead of chown/chmod/uname - would be better
  -  get OUTSIDE_IP via ssh env
  - timezone is America/New_York, vm is still utc.
  - although you can set INSTALL_DB to Yes or not, still is set for maria.
- - php5-mysql is unconditional.
+ - php5-mysql is unconditional
 
 TODO: 
  parameters.yml?  (why not commit ?)
