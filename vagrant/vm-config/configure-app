@@ -29,7 +29,7 @@ echo
 
 echo Creating symfony project...
 echo '#  ############################################################################# TODO: check if this fails due to old php version'
-symfony new $PROJECT
+symfony new $PROJECT 2.7
 cd $PROJECT
 
 
